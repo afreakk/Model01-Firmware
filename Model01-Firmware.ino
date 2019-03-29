@@ -72,6 +72,10 @@
 // Support for USB quirks, like changing the key state report protocol
 #include "Kaleidoscope-USB-Quirks.h"
 
+#include "Kaleidoscope-OneShot.h"
+#include "Kaleidoscope-Escape-OneShot.h"
+#include "Kaleidoscope-LED-ActiveModColor.h"
+
 /** This 'enum' is a list of all the macros used by the Model 01's firmware
   * The names aren't particularly important. What is important is that each
   * is unique.
@@ -139,7 +143,7 @@ enum { MACRO_VERSION_INFO,
   *
   */
 
-enum { PRIMARY, NUMPAD, FUNCTION }; // layers
+enum { PRIMARY, COLEMAK, NUMPAD, FUNCTION, GAMING, NORWEGIAN }; // layers
 
 
 /**
@@ -155,11 +159,11 @@ enum { PRIMARY, NUMPAD, FUNCTION }; // layers
   *
   */
 
-#define PRIMARY_KEYMAP_QWERTY
+// #define PRIMARY_KEYMAP_QWERTY
 // #define PRIMARY_KEYMAP_COLEMAK
 // #define PRIMARY_KEYMAP_DVORAK
-// #define PRIMARY_KEYMAP_CUSTOM
-
+ #define PRIMARY_KEYMAP_CUSTOM
+// #define PRIMARY_KEYMAP_CUSTOM_TARMAK
 
 
 /* This comment temporarily turns off astyle's indent enforcement
@@ -184,6 +188,7 @@ KEYMAPS(
    Key_RightAlt,  Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
    Key_RightShift, Key_LeftAlt, Key_Spacebar, Key_RightControl,
    ShiftToLayer(FUNCTION)),
+
 
 #elif defined (PRIMARY_KEYMAP_DVORAK)
 
@@ -222,19 +227,58 @@ KEYMAPS(
 #elif defined (PRIMARY_KEYMAP_CUSTOM)
   // Edit this keymap to make a custom layout
   [PRIMARY] = KEYMAP_STACKED
-  (___,          Key_1, Key_2, Key_3, Key_4, Key_5, Key_LEDEffectNext,
-   Key_Backtick, Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
-   Key_PageUp,   Key_A, Key_S, Key_D, Key_F, Key_G,
-   Key_PageDown, Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
-   Key_LeftControl, Key_Backspace, Key_LeftGui, Key_LeftShift,
-   ShiftToLayer(FUNCTION),
+(
+    LockLayer(NORWEGIAN), Key_1, Key_2, Key_3, Key_4, Key_5, LSHIFT(Key_LeftGui),
+    Key_Backtick,         Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
+    Key_PageUp,           Key_A, Key_S, Key_D, Key_F, Key_G,
+    Key_PageDown,         Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
+    OSM(LeftControl), Key_Backspace, OSM(LeftGui), OSM(LeftShift),
+    OSL(FUNCTION),
+    
+    RALT(LCTRL(Key_LeftShift)), Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
+    Key_Enter,                  Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
+                                Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
+    LockLayer(COLEMAK),         Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
+    OSM(RightShift), OSM(LeftAlt), Key_Spacebar, OSM(RightControl),
+    OSL(FUNCTION)
+),
 
-   M(MACRO_ANY),  Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(NUMPAD),
-   Key_Enter,     Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
-                  Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
-   Key_RightAlt,  Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
-   Key_RightShift, Key_LeftAlt, Key_Spacebar, Key_RightControl,
-   ShiftToLayer(FUNCTION)),
+#elif defined (PRIMARY_KEYMAP_CUSTOM_TARMAK)
+  // CURRENTLY: TARMAK#1
+  [PRIMARY] = KEYMAP_STACKED
+(
+    LockLayer(NORWEGIAN), Key_1, Key_2, Key_3, Key_4, Key_5, LSHIFT(Key_LeftGui),
+    Key_Backtick,         Key_Q, Key_W, Key_J, Key_R, Key_T, Key_Tab,
+    Key_PageUp,           Key_A, Key_S, Key_D, Key_F, Key_G,
+    Key_PageDown,         Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
+    OSM(LeftControl), Key_Backspace, OSM(LeftGui), OSM(LeftShift),
+    OSL(FUNCTION),
+    
+    RALT(LCTRL(Key_LeftShift)), Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
+    Key_Enter,                  Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
+                                Key_H, Key_N, Key_E,     Key_L,         Key_Semicolon, Key_Quote,
+    Key_RightAlt,               Key_K, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
+    OSM(RightShift), OSM(LeftAlt), Key_Spacebar, OSM(RightControl),
+    OSL(FUNCTION)
+),
+
+#elif defined (PRIMARY_KEYMAP_CUSTOM_COLEMAK)
+  [PRIMARY] = KEYMAP_STACKED
+(
+    LockLayer(NORWEGIAN), Key_1, Key_2, Key_3, Key_4, Key_5, LSHIFT(Key_LeftGui),
+    Key_Backtick,         Key_Q, Key_W, Key_F, Key_P, Key_G, Key_Tab,
+    Key_PageUp,           Key_A, Key_R, Key_S, Key_T, Key_D,
+    Key_PageDown,         Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
+    OSM(LeftControl), Key_Backspace, OSM(LeftGui), OSM(LeftShift),
+    OSL(FUNCTION),
+    
+    RALT(LCTRL(Key_LeftShift)), Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
+    Key_Enter,                  Key_J, Key_L, Key_U,     Key_Y,         Key_Semicolon, Key_Equals,
+                                Key_H, Key_N, Key_E,     Key_I,         Key_O,		   Key_Quote,
+    Key_RightAlt,               Key_K, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
+    OSM(RightShift), OSM(LeftAlt), Key_Spacebar, OSM(RightControl),
+    OSL(FUNCTION)
+),
 
 #else
 
@@ -242,6 +286,22 @@ KEYMAPS(
 
 #endif
 
+  [COLEMAK] = KEYMAP_STACKED
+(
+    LockLayer(NORWEGIAN), Key_1, Key_2, Key_3, Key_4, Key_5, LSHIFT(Key_LeftGui),
+    Key_Backtick,         Key_Q, Key_W, Key_F, Key_P, Key_G, Key_Tab,
+    Key_PageUp,           Key_A, Key_R, Key_S, Key_T, Key_D,
+    Key_PageDown,         Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
+    OSM(LeftControl), Key_Backspace, OSM(LeftGui), OSM(LeftShift),
+    OSL(FUNCTION),
+    
+    RALT(LCTRL(Key_LeftShift)), Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
+    Key_Enter,                  Key_J, Key_L, Key_U,     Key_Y,         Key_Semicolon, Key_Equals,
+                                Key_H, Key_N, Key_E,     Key_I,         Key_O,		   Key_Quote,
+    UnlockLayer(COLEMAK),       Key_K, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
+    OSM(RightShift), OSM(LeftAlt), Key_Spacebar, OSM(RightControl),
+    OSL(FUNCTION)
+),
 
 
   [NUMPAD] =  KEYMAP_STACKED
@@ -252,19 +312,19 @@ KEYMAPS(
    ___, ___, ___, ___,
    ___,
 
-   M(MACRO_VERSION_INFO),  ___, Key_7, Key_8,      Key_9,              Key_KeypadSubtract, ___,
-   ___,                    ___, Key_4, Key_5,      Key_6,              Key_KeypadAdd,      ___,
-                           ___, Key_1, Key_2,      Key_3,              Key_Equals,         ___,
-   ___,                    ___, Key_0, Key_Period, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
+   M(MACRO_VERSION_INFO),  ___, Key_Keypad7, Key_Keypad8,   Key_Keypad9,        Key_KeypadSubtract, ___,
+   ___,                    ___, Key_Keypad4, Key_Keypad5,   Key_Keypad6,        Key_KeypadAdd,      ___,
+                           ___, Key_Keypad1, Key_Keypad2,   Key_Keypad3,        Key_Equals,         ___,
+   ___,                    ___, Key_Keypad0, Key_KeypadDot, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
    ___, ___, ___, ___,
    ___),
 
   [FUNCTION] =  KEYMAP_STACKED
-  (___,      Key_F1,           Key_F2,      Key_F3,     Key_F4,        Key_F5,           Key_CapsLock,
-   Key_Tab,  ___,              Key_mouseUp, ___,        Key_mouseBtnR, Key_mouseWarpEnd, Key_mouseWarpNE,
-   Key_Home, Key_mouseL,       Key_mouseDn, Key_mouseR, Key_mouseBtnL, Key_mouseWarpNW,
-   Key_End,  Key_PrintScreen,  Key_Insert,  ___,        Key_mouseBtnM, Key_mouseWarpSW,  Key_mouseWarpSE,
-   ___, Key_Delete, ___, ___,
+  (___,       Key_F1,           Key_F2,       Key_F3,             Key_F4,         Key_F5,       Key_LEDEffectNext,
+   Key_Tab,   ___,              ___,          Key_mouseScrollUp,  Key_mouseBtnL,  Key_Tab,      ___,
+   Key_Home,  Key_mouseL,       Key_mouseDn,  Key_mouseUp,        Key_mouseR,     Key_mouseBtnM,
+   Key_End,   Key_PrintScreen,  Key_Insert,   Key_mouseScrollDn,  Key_mouseBtnR,  ___,          ___,
+   ___,       Key_Delete,       ___,          ___,
    ___,
 
    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
@@ -272,7 +332,56 @@ KEYMAPS(
                                Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
    Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
    ___, ___, Key_Enter, ___,
+   ___),
+
+  [GAMING] =  KEYMAP_STACKED
+  (___, ___,   ___,   ___,   ___,   ___,   ___,
+   ___, Key_Q, Key_W, Key_E, Key_R, Key_T, ___,
+   ___, Key_A, Key_S, Key_D, Key_F, Key_G,
+   ___, Key_Z, Key_X, Key_C, Key_V, Key_B, ___,
+   Key_Tab, Key_Spacebar, Key_LeftControl, Key_RightAlt,
+   Key_LeftShift,
+
+   ___, ___,   ___,   ___,   ___,   ___,   UnlockLayer(GAMING),
+   ___, Key_Y, Key_U, Key_I, Key_O, Key_P, ___,
+   ___, Key_H, Key_J, Key_K, Key_L, ___,
+   ___, Key_N, Key_M, ___,   ___,   ___,   ___,
+   Key_RightShift, Key_LeftAlt, Key_LeftGui, Key_RightControl,
+   ___),
+
+
+#if defined (PRIMARY_KEYMAP_CUSTOM_COLEMAK)
+  [NORWEGIAN] =  KEYMAP_STACKED
+  (UnlockLayer(NORWEGIAN), ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___,
+   ___,
+
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, Key_F24,
+   ___, ___, ___, ___, Key_F23, Key_F22,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___,
    ___)
+#else
+  [NORWEGIAN] =  KEYMAP_STACKED
+  (UnlockLayer(NORWEGIAN), ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___,
+   ___,
+
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, Key_F24,
+   ___, ___, ___, ___, Key_F23, Key_F22,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___,
+   ___)
+
+#endif
 ) // KEYMAPS(
 
 /* Re-enable astyle's indent enforcement */
@@ -495,7 +604,11 @@ KALEIDOSCOPE_INIT_PLUGINS(
   // comfortable - or able - to do automatically, but can be useful
   // nevertheless. Such as toggling the key report protocol between Boot (used
   // by BIOSes) and Report (NKRO).
-  USBQuirks
+  USBQuirks,
+
+  OneShot,
+  EscapeOneShot,
+  ActiveModColorEffect
 );
 
 /** The 'setup' function is one of the two standard Arduino sketch functions.
