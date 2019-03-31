@@ -164,6 +164,7 @@ enum { PRIMARY, COLEMAK, NUMPAD, FUNCTION, GAMING, NORWEGIAN }; // layers
 // #define PRIMARY_KEYMAP_DVORAK
  #define PRIMARY_KEYMAP_CUSTOM
 // #define PRIMARY_KEYMAP_CUSTOM_TARMAK
+// #define PRIMARY_KEYMAP_CUSTOM_COLEMAK
 
 
 /* This comment temporarily turns off astyle's indent enforcement
@@ -295,10 +296,10 @@ KEYMAPS(
     OSM(LeftControl), Key_Backspace, OSM(LeftGui), OSM(LeftShift),
     OSL(FUNCTION),
     
-    RALT(LCTRL(Key_LeftShift)), Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
-    Key_Enter,                  Key_J, Key_L, Key_U,     Key_Y,         Key_Semicolon, Key_Equals,
-                                Key_H, Key_N, Key_E,     Key_I,         Key_O,		   Key_Quote,
-    UnlockLayer(COLEMAK),       Key_K, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
+    RALT(LCTRL(Key_LeftShift)), Key_6, Key_7, Key_8,     Key_9,       Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
+    Key_Enter,                  Key_J, Key_L, Key_U,     Key_Y,       Key_Semicolon, Key_Equals,
+                                Key_H, Key_N, Key_E,     Key_I,       Key_O,		   Key_Quote,
+    UnlockLayer(COLEMAK),       Key_K, Key_M, Key_Comma, Key_Period,  Key_Slash,     Key_Minus,
     OSM(RightShift), OSM(LeftAlt), Key_Spacebar, OSM(RightControl),
     OSL(FUNCTION)
 ),
@@ -320,10 +321,10 @@ KEYMAPS(
    ___),
 
   [FUNCTION] =  KEYMAP_STACKED
-  (___,       Key_F1,           Key_F2,       Key_F3,             Key_F4,         Key_F5,       Key_LEDEffectNext,
-   Key_Tab,   ___,              ___,          Key_mouseScrollUp,  Key_mouseBtnL,  Key_Tab,      ___,
-   Key_Home,  Key_mouseL,       Key_mouseDn,  Key_mouseUp,        Key_mouseR,     Key_mouseBtnM,
-   Key_End,   Key_PrintScreen,  Key_Insert,   Key_mouseScrollDn,  Key_mouseBtnR,  ___,          ___,
+  (___,       Key_F1,           Key_F2,             Key_F3,         Key_F4,           Key_F5,           Key_LEDEffectNext,
+   Key_Tab,   Key_mouseWarpNW,  Key_mouseScrollUp,  Key_mouseBtnL,  Key_mouseWarpNE,  Key_Insert,       ___,
+   Key_Home,  Key_mouseL,       Key_mouseDn,        Key_mouseUp,    Key_mouseR,       Key_mouseBtnM,
+   Key_End,   Key_mouseWarpSW,  Key_mouseScrollDn,  Key_mouseBtnR,  Key_mouseWarpSE,  Key_PrintScreen,  Key_mouseWarpEnd,
    ___,       Key_Delete,       ___,          ___,
    ___,
 
@@ -632,13 +633,14 @@ void setup() {
   // additional layers in EEPROM. For now, we reserve space for five layers. If
   // one wants to use these layers, just set the default layer to one in EEPROM,
   // by using the `settings.defaultLayer` Focus command, or by using the
-  // `keymap.onlyCustom` command to use EEPROM layers only.
   EEPROMKeymap.setup(5);
 
   // We need to tell the Colormap plugin how many layers we want to have custom
   // maps for. To make things simple, we set it to five layers, which is how
   // many editable layers we have (see above).
   ColormapEffect.max_layers(5);
+
+  MouseKeys.accelDelay = 25;
 }
 
 /** loop is the second of the standard Arduino sketch functions.
