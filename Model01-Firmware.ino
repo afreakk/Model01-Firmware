@@ -143,7 +143,7 @@ enum { MACRO_VERSION_INFO,
   *
   */
 
-enum { PRIMARY, NUMPAD, FUNCTION, GAMING, NORWEGIAN }; // layers
+enum { PRIMARY, NUMERIC, NUMPAD, FUNCTION, GAMING, NORWEGIAN }; // layers
 
 
 /**
@@ -253,10 +253,10 @@ KEYMAPS(
     OSM(LeftControl), Key_Backspace, OSM(LeftGui), OSM(LeftShift),
     OSL(FUNCTION),
     
-    RALT(LCTRL(Key_LeftShift)), Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
+    Key_Sysreq, Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
     Key_Enter,                  Key_J, Key_L, Key_U,     Key_Y,         Key_Semicolon, Key_Equals,
                                 Key_H, Key_N, Key_E,     Key_I,         Key_O,		   Key_Quote,
-    Key_RightAlt,               Key_K, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
+    LockLayer(NUMERIC),                 Key_K, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
     OSM(RightShift), OSM(LeftAlt), Key_Spacebar, OSM(RightControl),
     OSL(FUNCTION)
 ),
@@ -266,6 +266,21 @@ KEYMAPS(
 #error "No default keymap defined. You should make sure that you have a line like '#define PRIMARY_KEYMAP_QWERTY' in your sketch"
 
 #endif
+
+  [NUMERIC] =  KEYMAP_STACKED
+  (___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, Key_1, Key_2, Key_3, Key_4, Key_5,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___,
+   ___,
+
+   ___,  ___,   ___,   ___,   ___,   ___,   ___,
+   ___,  ___,   ___,   ___,   ___,   ___,   ___,
+         Key_6, Key_7, Key_8, Key_9, Key_0, ___,
+   ___,  ___,   ___,   ___,   ___,   ___,   ___,
+   ___,  ___,   ___,   ___,
+   ___),
 
   [NUMPAD] =  KEYMAP_STACKED
   (___, ___, ___, ___, ___, ___, ___,
