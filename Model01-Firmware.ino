@@ -1,3 +1,4 @@
+/* vim: set ts=2 sts=0 sw=2 tw=0 et :*/
 // -*- mode: c++ -*-
 // Copyright 2016 Keyboardio, inc. <jesse@keyboard.io>
 // See "LICENSE" for license details
@@ -581,6 +582,8 @@ KALEIDOSCOPE_INIT_PLUGINS(
  * Kaleidoscope and any plugins.
  */
 void setup() {
+  OneShot.time_out = 2000;
+  OneShot.hold_time_out = 160;
   // First, call Kaleidoscope's internal setup function
   Kaleidoscope.setup();
 
