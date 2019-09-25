@@ -34,7 +34,7 @@
 #include "Kaleidoscope-LEDControl.h"
 
 // Support for "Numpad" mode, which is mostly just the Numpad specific LED mode
-#include "Kaleidoscope-NumPad.h"
+//#include "Kaleidoscope-NumPad.h"
 
 // Support for the "Boot greeting" effect, which pulses the 'LED' button for 10s
 // when the keyboard is connected to a computer (or that computer is powered on)
@@ -144,7 +144,7 @@ enum { MACRO_VERSION_INFO,
   *
   */
 
-enum { PRIMARY, NUMERIC, NUMPAD, FUNCTION, GAMING, NORWEGIAN }; // layers
+enum { PRIMARY, NUMERIC, /*NUMPAD,*/ FUNCTION, GAMING, GAMING_COLEMAK, NORWEGIAN }; // layers
 
 
 /**
@@ -254,7 +254,7 @@ KEYMAPS(
     OSM(LeftControl), Key_Backspace, OSM(LeftGui), OSM(LeftShift),
     OSL(FUNCTION),
     
-    Key_Sysreq,         Key_6, Key_7, Key_8,     Key_9,      Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
+    LockLayer(GAMING_COLEMAK),  Key_6, Key_7, Key_8,     Key_9,      Key_0,         LockLayer(GAMING),//LockLayer(NUMPAD),
     Key_Enter,          Key_J, Key_L, Key_U,     Key_Y,      Key_Semicolon, Key_Equals,
                         Key_H, Key_N, Key_E,     Key_I,      Key_O,         Key_Quote,
     LockLayer(NUMERIC), Key_K, Key_M, Key_Comma, Key_Period, Key_Slash,     Key_Minus,
@@ -282,7 +282,7 @@ KEYMAPS(
    ___,  ___,   ___,   ___,   ___,   ___,   ___,
    ___,  ___,   ___,   ___,
    ___),
-
+/*
   [NUMPAD] =  KEYMAP_STACKED
   (___, ___, ___, ___, ___, ___, ___,
    ___, ___, ___, ___, ___, ___, ___,
@@ -297,10 +297,10 @@ KEYMAPS(
    ___,                    ___, Key_Keypad0, Key_KeypadDot, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
    ___, ___, ___, ___,
    ___),
-
+*/
   [FUNCTION] =  KEYMAP_STACKED
   (___,       Key_F1,           Key_F2,             Key_F3,         Key_F4,           Key_F5,           Key_LEDEffectNext,
-   Key_Tab,   Key_mouseWarpNW,  Key_mouseScrollUp,  Key_mouseBtnL,  Key_mouseWarpNE,  Key_Insert,       Key_mouseWarpEnd,
+   Key_Tab,   Key_mouseWarpNW,  Key_mouseScrollUp,  Key_mouseBtnL,  Key_mouseWarpNE,  Key_mouseWarpEnd, ___,
    Key_Home,  Key_mouseL,       Key_mouseDn,        Key_mouseUp,    Key_mouseR,       Key_mouseBtnM,
    Key_End,   Key_mouseWarpSW,  Key_mouseScrollDn,  Key_mouseBtnR,  Key_mouseWarpSE,  Key_PrintScreen,  ___,
    ___,       Key_Delete,       ___,          ___,
@@ -326,6 +326,21 @@ KEYMAPS(
    ___, Key_H, Key_J, Key_K, Key_L, ___,
    ___, Key_N, Key_M, ___,   ___,   ___,   ___,
    Key_RightShift, Key_LeftAlt, Key_LeftGui, Key_RightControl,
+   ___),
+
+  [GAMING_COLEMAK] =  KEYMAP_STACKED
+  (___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   Key_Tab, Key_Spacebar, Key_LeftControl, Key_RightAlt,
+   Key_LeftShift,
+
+   UnlockLayer(GAMING_COLEMAK), ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___,
+   ___, ___, ___, ___, ___, ___, ___,
+   Key_RightShift, Key_LeftAlt, Key_Backspace, Key_RightControl,
    ___),
 
 
@@ -549,7 +564,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
   // The numpad plugin is responsible for lighting up the 'numpad' mode
   // with a custom LED effect
-  NumPad,
+  //NumPad,
 
   // The macros plugin adds support for macros
   Macros,
@@ -589,7 +604,7 @@ void setup() {
 
   // While we hope to improve this in the future, the NumPad plugin
   // needs to be explicitly told which keymap layer is your numpad layer
-  NumPad.numPadLayer = NUMPAD;
+  //NumPad.numPadLayer = NUMPAD;
 
   // We configure the AlphaSquare effect to use RED letters
   AlphaSquare.color = CRGB(255, 0, 0);
@@ -621,6 +636,7 @@ void setup() {
   ColormapEffect.max_layers(5);
 
   MouseKeys.accelDelay = 25;
+  MouseKeys.wheelDelay = 100;
 }
 
 /** loop is the second of the standard Arduino sketch functions.
